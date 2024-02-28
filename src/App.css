@@ -22,10 +22,6 @@ body {
   justify-content: center;
 }
 
-label, input {
-  cursor: pointer;
-}
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -56,6 +52,7 @@ h1 {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  transition: scale 150ms;
 }
 
 .button-38:hover {
@@ -65,6 +62,10 @@ h1 {
 .button-38:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.button-38:active {
+  scale: 0.9;
 }
 
 .button-38:focus-visible {
