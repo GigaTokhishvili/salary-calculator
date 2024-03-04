@@ -1,31 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
+import hourStyles from '../styles/hours.module.css'
 
 function HoursInput({header, description, value, changeHours, hourButtons}) {
+    const [modal, setModal] = useState(false);
 
     const handleClick = (e) => {
         hourButtons(Number(e.target.innerHTML))
     }
 
+    const handleHourChange = e => {
+        changeHours(e.target.value)
+    }
+
     return (
-
     <section>
-        <h1>{header}</h1>
-        <p>{description}</p>
+        <div onClick={() => setModal(prev => !prev)} className={hourStyles.modalDiv}>
+            <h1>{header}</h1>
+            <span className={modal ? hourStyles.modalBtnUp : hourStyles.modalBtnDown}>﹀</span>
+        </div>
+        <div className={modal ? hourStyles.openModal : hourStyles.closeModal}>
+            <p>{description}</p>
+        </div>
 
-        <button className='button-38' onClick={handleClick} >-16</button>
-        <button className='button-38' onClick={handleClick} >-4</button>
+        <div className={hourStyles.hoursDiv}>
+            <button className={hourStyles.button38} onClick={handleClick} >-16</button>
+            <button className={hourStyles.button38} onClick={handleClick} >-4</button>
 
-        <input 
-            value={value} 
-            onChange={(e) => changeHours(e.target.value)}
-            type="number" 
-            placeholder='Hours worked' 
-        />
-
-        <button className='button-38' onClick={handleClick} >+4</button>
-        <button className='button-38' onClick={handleClick} >+16</button>
-
-    
+            <input 
+                value={value} 
+                onChange={handleHourChange}
+                type="number" 
+                placeholder='Hours worked' 
+            />
+            <button className={hourStyles.button38} onClick={handleClick} >+4</button>
+            <button className={hourStyles.button38} onClick={handleClick} >+16</button>
+        </div>
     </section>
     )
 }

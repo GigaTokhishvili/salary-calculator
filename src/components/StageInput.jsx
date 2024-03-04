@@ -2,13 +2,13 @@ import React from 'react'
 import inputStyles from '../styles/StageInput.module.css'
 
 function StageInput( {name, changeStage, initialStage, obj} ) {
-  
+
   return (
-    <div className={inputStyles.labelCss} onClick={() => changeStage(obj)} >
-        <label htmlFor={name} >
+    <div className={inputStyles.labelDiv} onClick={() => changeStage(obj)} >
+        <label className={initialStage === obj.name ? inputStyles.isChecked : null} htmlFor={name} >
             {name}
         </label>
-        <input onClick={(e) => console.log(e)} defaultChecked={initialStage === name ? true : false} type="radio" id={name} name='stage' value={name} className={inputStyles.stageInput} />
+        <input defaultChecked={initialStage === name ? true : false} type="radio" id={name} name='stage' value={name} className={inputStyles.stageInput} />
     </div>
   )
 }
