@@ -1,16 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import hourStyles from '../styles/hours.module.css'
 import { nanoid } from 'nanoid';
 
-function HoursInput({header, description, value, changeHours, hourButtons}) {
+function Hours({header, description, shiftType, totalHours}) {
+    const [hours, setHours] = useState(0)
     const [modal, setModal] = useState(false);
 
+    useEffect(() => {
+        setHours(Number(localStorage.getItem(shiftType)));
+    }, [])
+
     const handleClick = (e) => {
-        hourButtons(Number(e.target.innerHTML))
+        const value = Number(e.target.innerHTML);
+
+        if (0 <= hours + value && hours + value <= 240) {
+            setHours(prev => Number(prev) + value)
+            localStorage.setItem(shiftType, hours + value)
+            totalHours(shiftType, Number(hours) + value);
+        } else if (Number(hours) + value < 0) {
+            setHours(0)
+            localStorage.setItem(shiftType, 0)
+            totalHours(shiftType, 0);
+        } else if (Number(hours) + value > 240) {
+            setHours(240)
+            localStorage.setItem(shiftType, 240)
+            totalHours(shiftType, 240);
+        }
     }
 
     const handleHourChange = e => {
-        changeHours(e.target.value)
+        const value = Number(e.target.value);
+        if (0 <= value && value <= 240) {
+            setHours(value)
+            localStorage.setItem(shiftType, value)
+        } else if (value < 0) {
+            setHours(0);
+            localStorage.setItem(shiftType, 0)
+        } else if (value > 240) {
+            setHours(240)
+            localStorage.setItem(shiftType, 240)
+        }
     }
 
     return (
@@ -28,7 +57,7 @@ function HoursInput({header, description, value, changeHours, hourButtons}) {
             <button className={hourStyles.button38} onClick={handleClick} onTouchStart={handleClick} >-4</button>
 
             <input 
-                value={value} 
+                value={hours} 
                 onChange={handleHourChange}
                 type="number" 
                 placeholder='Hours worked'
@@ -41,4 +70,4 @@ function HoursInput({header, description, value, changeHours, hourButtons}) {
     )
 }
 
-export default HoursInput
+export default Hours
