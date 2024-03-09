@@ -1,25 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import StageInput from './components/StageInput'
 import STAGES from './data/stages';
+import HOURSOBJ from './data/hoursObj';
 import PA from './data/pa';
 import SGC from './data/sgc';
 import REACTION from './data/reactionTime';
 import SPEED from './data/gameSpeed';
 import ROULETTE from './data/roulette';
 import Hours from './components/Hours';
+import { nanoid } from 'nanoid';
 
 
 function App() {
   const [stage, setStage] = useState(JSON.parse(localStorage.getItem('stage')) || STAGES[0])
-  const [hours, setHours] = useState(Number(localStorage.getItem('hours')))
   const [totalHours, setTotalHours] = useState([
-    {amount: 100, type: 'hours'},
-    {amount: 100, type: 'nightHours'},
-    {amount: 100, type: 'totalHours'},
+    {amount: Number(localStorage.getItem('hours')) || 120, type: 'hours'},
+    {amount: Number(localStorage.getItem('nightHours')) || 0, type: 'nightHours'},
+    {amount: Number(localStorage.getItem('doubleHours')) || 0, type: 'doubleHours'},
   ])
-  const [nightHours, setNightHours] = useState(Number(localStorage.getItem('nightHours')) || 0)
-  const [doubleHours, setDoubleHours] = useState(Number(localStorage.getItem('doubleHours')) || 0)
   const [pa, setPa] = useState(JSON.parse(localStorage.getItem('pa')) || PA[0])
   const [sgc, setSgc] = useState(JSON.parse(localStorage.getItem('sgc')) || SGC[0])
   const [reaction, setReaction] = useState(JSON.parse(localStorage.getItem('reaction')) || REACTION[0])
@@ -32,17 +31,13 @@ function App() {
   }
 
   const workedHours = (type, hrs) => {
-    setHours(hrs);
-    setTotalHours({...totalHours, type: type})
-    // console.log(totalHours)
-  }
-
-  const workedNightHours = (type, hrs) => {
-    setNightHours(hrs);
-  }
-
-  const workedDoubleHours = (type, hrs) => {
-    setDoubleHours(hrs);
+    const updatedHours = totalHours.map((hours) => {
+      if (type === hours.type) {
+        return { ...hours, amount: hrs}
+      }
+      return hours;
+    })
+    setTotalHours(updatedHours)
   }
 
   const changePaBonus = (x) => {
@@ -91,25 +86,16 @@ function App() {
       </section>
 
       {/* All hours */}
-      <section>
-        <Hours 
-          header={'Total Hours'} 
-          description={'Overall hours you have actually worked during the month'} 
-          shiftType={'hours'}
-          totalHours={workedHours}
-        />
-        <Hours 
-          header={'Only Night Hours'} 
-          description={'Specifically and ONLY night hours you have or will work during the month. For example a typical night shift (00:00 - 08:00) has only 6 hours of night shift, giving you 6 hours of extra salary.'} 
-          shiftType={'nightHours'}
-          totalHours={workedNightHours}
-        />
-        <Hours 
-          header={'Bonus Shift Hours'} 
-          description={'Similar to night hours. This field is for ONLY bonus hours. Usually 8 hours per shift, unless you are working from 20:00 to 04:00 for example.'} 
-          shiftType={'doubleHours'}
-          totalHours={workedDoubleHours}
-        />
+      <section className='hoursSection'>
+        {HOURSOBJ.map(({ header, description, shiftType }) => (
+          <Hours 
+            key={nanoid()}
+            header={header}
+            description={description}
+            shiftType={shiftType}
+            totalHours={workedHours}
+          />
+        ))}
       </section>
 
       {/* PA bonus */}
@@ -124,6 +110,7 @@ function App() {
               changeStage={changePaBonus}
               initialStage={pa.name}
               obj={item}
+              totalHours={totalHours[0].amount}
             />)
           })}
         </div>
@@ -141,6 +128,7 @@ function App() {
               changeStage={changeSgcBonus}
               initialStage={sgc.name}
               obj={item}
+              totalHours={totalHours[0].amount}
             />)
           })}
         </div>
@@ -158,6 +146,7 @@ function App() {
               changeStage={changeReactionBonus}
               initialStage={reaction.name}
               obj={item}
+              totalHours={totalHours[0].amount}
             />)
           })}
         </div>
@@ -175,6 +164,7 @@ function App() {
               changeStage={changeSpeedBonus}
               initialStage={speed.name}
               obj={item}
+              totalHours={totalHours[0].amount}
             />)
           })}
         </div>
@@ -193,6 +183,7 @@ function App() {
               initialStage={roulette.name}
               obj={item}
               id={index}
+              totalHours={totalHours[0].amount}
             />)
           })}
         </div>
@@ -200,9 +191,9 @@ function App() {
 
       <section>
         <h1>gross salary</h1>
-        <h1>{Math.round((hours * stage.salary + nightHours * stage.salary/2 + doubleHours * stage.salary/2 + hours * pa.salary + hours * sgc.salary + hours * reaction.salary + hours * speed.salary + hours * roulette.salary) * 100) / 100 }</h1>
+        <h1>{Math.round((totalHours[0].amount * stage.salary + totalHours[1].amount * stage.salary/2 + totalHours[2].amount * stage.salary/2 + totalHours[0].amount * pa.salary + totalHours[0].amount * sgc.salary + totalHours[0].amount * reaction.salary + totalHours[0].amount * speed.salary + totalHours[0].amount * roulette.salary) * 100) / 100 }</h1>
         <h1>net salary</h1>
-        <h1>{Math.round((0.98 * (0.8 * (hours * stage.salary + nightHours * stage.salary/2 + doubleHours * stage.salary/2 + hours * pa.salary + hours * sgc.salary + hours * reaction.salary + hours * speed.salary + hours * roulette.salary))) *100 ) / 100}</h1>
+        <h1>{Math.round((0.98 * (0.8 * (totalHours[0].amount * stage.salary + totalHours[1].amount * stage.salary/2 + totalHours[2].amount * stage.salary/2 + totalHours[0].amount * pa.salary + totalHours[0].amount * sgc.salary + totalHours[0].amount * reaction.salary + totalHours[0].amount * speed.salary + totalHours[0].amount * roulette.salary))) *100 ) / 100}</h1>
       </section>
     </>
   )

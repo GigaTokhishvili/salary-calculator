@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import hourStyles from '../styles/hours.module.css'
+import hourStyles from '../styles/Hours.module.css'
 import { nanoid } from 'nanoid';
 
 function Hours({header, description, shiftType, totalHours}) {
@@ -30,15 +30,19 @@ function Hours({header, description, shiftType, totalHours}) {
 
     const handleHourChange = e => {
         const value = Number(e.target.value);
+        
         if (0 <= value && value <= 240) {
             setHours(value)
             localStorage.setItem(shiftType, value)
+            totalHours(shiftType, value);
         } else if (value < 0) {
             setHours(0);
+            totalHours(shiftType, 0);
             localStorage.setItem(shiftType, 0)
         } else if (value > 240) {
             setHours(240)
             localStorage.setItem(shiftType, 240)
+            totalHours(shiftType, 240);
         }
     }
 
@@ -53,18 +57,18 @@ function Hours({header, description, shiftType, totalHours}) {
         </div>
 
         <div className={hourStyles.hoursDiv}>
-            <button className={hourStyles.button38} onClick={handleClick} onTouchStart={handleClick} >-16</button>
-            <button className={hourStyles.button38} onClick={handleClick} onTouchStart={handleClick} >-4</button>
-
+            <button className={hourStyles.button38} onClick={handleClick} >-16</button>
+            <button className={hourStyles.button38} onClick={handleClick} >-4</button>
             <input 
                 value={hours} 
                 onChange={handleHourChange}
                 type="number" 
                 placeholder='Hours worked'
                 id={nanoid()}
+                className={hourStyles.hoursInput}
             />
-            <button className={hourStyles.button38} onClick={handleClick} onTouchStart={handleClick} >+4</button>
-            <button className={hourStyles.button38} onClick={handleClick} onTouchStart={handleClick} >+16</button>
+            <button className={hourStyles.button38} onClick={handleClick} >+4</button>
+            <button className={hourStyles.button38} onClick={handleClick} >+16</button>
         </div>
     </section>
     )
