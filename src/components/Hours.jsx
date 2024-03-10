@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import HourStyles from '../styles/Hours.module.css';
+import HourStyles from '../styles/HoursInput.module.css';
 import { nanoid } from 'nanoid';
 
 function Hours({header, description, shiftType, totalHours}) {
