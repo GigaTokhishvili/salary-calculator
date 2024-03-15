@@ -60,9 +60,8 @@ const Hours = memo(({header, description, shiftType, totalHours}) => {
             <button className={HourStyles.button38} onClick={handleClick} >-16</button>
             <button className={HourStyles.button38} onClick={handleClick} >-4</button>
             <input 
-                value={hours} 
+                value={hours.toString()} 
                 onChange={handleHourChange}
-                // onBlur={(e) => totalHours(shiftType, Number(e.target.value))}
                 type="number" 
                 placeholder='Hours worked'
                 id={nanoid()}

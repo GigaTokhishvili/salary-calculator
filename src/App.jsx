@@ -9,7 +9,6 @@ import REACTION from './data/reactionTime';
 import SPEED from './data/gameSpeed';
 import ROULETTE from './data/roulette';
 import Hours from './components/Hours';
-import { nanoid } from 'nanoid';
 
 
 function App() {
@@ -33,7 +32,7 @@ function App() {
   const workedHours = useCallback((type, hrs) => {
     const updatedHours = totalHours.map((hours) => {
       if (type === hours.type) {
-        return { ...hours, amount: hrs}
+        return { ...hours, amount: Number(hrs)}
       }
       return hours;
     })
