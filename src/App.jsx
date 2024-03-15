@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
 import StageInput from './components/StageInput'
 import STAGES from './data/stages';
@@ -30,7 +30,7 @@ function App() {
     localStorage.setItem('stage', JSON.stringify(x))
   }
 
-  const workedHours = (type, hrs) => {
+  const workedHours = useCallback((type, hrs) => {
     const updatedHours = totalHours.map((hours) => {
       if (type === hours.type) {
         return { ...hours, amount: hrs}
@@ -38,7 +38,7 @@ function App() {
       return hours;
     })
     setTotalHours(updatedHours)
-  }
+  }, [])
 
   const changePaBonus = (x) => {
     setPa(x)
@@ -87,9 +87,9 @@ function App() {
 
       {/* All hours */}
       <section className='hoursSection'>
-        {HOURSOBJ.map(({ header, description, shiftType }) => (
+        {HOURSOBJ.map(({ header, description, shiftType }, index) => (
           <Hours 
-            key={nanoid()}
+            key={index}
             header={header}
             description={description}
             shiftType={shiftType}

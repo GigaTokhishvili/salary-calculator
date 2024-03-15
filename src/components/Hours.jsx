@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import HourStyles from '../styles/HoursInput.module.css';
 import { nanoid } from 'nanoid';
 
-function Hours({header, description, shiftType, totalHours}) {
+const Hours = memo(({header, description, shiftType, totalHours}) => {
     const [hours, setHours] = useState(0)
     const [modal, setModal] = useState(false);
 
@@ -32,16 +32,16 @@ function Hours({header, description, shiftType, totalHours}) {
         const value = Number(e.target.value);
         
         if (0 <= value && value <= 240) {
-            setHours(value)
-            localStorage.setItem(shiftType, value)
+            setHours(value);
+            localStorage.setItem(shiftType, value);
             totalHours(shiftType, value);
         } else if (value < 0) {
             setHours(0);
             totalHours(shiftType, 0);
-            localStorage.setItem(shiftType, 0)
+            localStorage.setItem(shiftType, 0);
         } else if (value > 240) {
-            setHours(240)
-            localStorage.setItem(shiftType, 240)
+            setHours(240);
+            localStorage.setItem(shiftType, 240);
             totalHours(shiftType, 240);
         }
     }
@@ -62,6 +62,7 @@ function Hours({header, description, shiftType, totalHours}) {
             <input 
                 value={hours} 
                 onChange={handleHourChange}
+                // onBlur={(e) => totalHours(shiftType, Number(e.target.value))}
                 type="number" 
                 placeholder='Hours worked'
                 id={nanoid()}
@@ -72,6 +73,6 @@ function Hours({header, description, shiftType, totalHours}) {
         </div>
     </section>
     )
-}
+});
 
 export default Hours
