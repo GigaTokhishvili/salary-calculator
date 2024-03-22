@@ -68,7 +68,7 @@ function App() {
     <>
       {/* stage */}
       <section>
-        <h1>CHOOSE STAGE</h1>
+        <h1>📆CHOOSE STAGE</h1>
 
         <div className='stageDiv'>
           {STAGES.map((item) => {
@@ -99,7 +99,7 @@ function App() {
 
       {/* PA bonus */}
       <section>
-        <h1>PA Bonus</h1>
+        <h1>🔎PA Bonus</h1>
         <div className='stageDiv'>
           {PA.map((item) => {
             return (
@@ -117,7 +117,7 @@ function App() {
 
       {/* SGC bonus */}
       <section>
-        <h1>SGC Bonus</h1>
+        <h1>🧮SGC Bonus</h1>
         <div className='stageDiv'>
           {SGC.map((item) => {
             return (
@@ -135,7 +135,7 @@ function App() {
 
       {/* Reaction time bonus */}
       <section>
-        <h1>Reaction Time Bonus</h1>
+        <h1>👀Reaction Time Bonus</h1>
         <div className='stageDiv'>
           {REACTION.map((item) => {
             return (
@@ -153,7 +153,7 @@ function App() {
 
       {/* Game Speed bonus */}
       <section>
-        <h1>Game Speed Bonus</h1>
+        <h1>🏃Game Speed Bonus</h1>
         <div className='stageDiv'>
           {SPEED.map((item) => {
             return (
@@ -171,7 +171,7 @@ function App() {
 
       {/* Roulette bonus */}
       <section>
-        <h1>Roulette cooperation Bonus</h1>
+        <h1>🤜🤛Roulette cooperation Bonus</h1>
         <div className='stageDiv'>
           {ROULETTE.map((item, index) => {
             return (
@@ -188,7 +188,7 @@ function App() {
         </div>
       </section>
 
-      <section>
+      <section className='calc-sec'>
         <h1>gross salary</h1>
         <h1>{Math.round((totalHours[0].amount * stage.salary + totalHours[1].amount * stage.salary/2 + totalHours[2].amount * stage.salary/2 + totalHours[0].amount * pa.salary + totalHours[0].amount * sgc.salary + totalHours[0].amount * reaction.salary + totalHours[0].amount * speed.salary + totalHours[0].amount * roulette.salary) * 100) / 100 }</h1>
         <h1>net salary</h1>
