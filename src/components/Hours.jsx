@@ -2,12 +2,12 @@ import React, { useEffect, useState, memo } from 'react';
 import HourStyles from '../styles/HoursInput.module.css';
 import { nanoid } from 'nanoid';
 
-const Hours = memo(({header, description, shiftType, totalHours}) => {
+const Hours = memo(({header, description, shiftType, totalHours, initialValue}) => {
     const [hours, setHours] = useState(0)
     const [modal, setModal] = useState(false);
 
     useEffect(() => {
-        setHours(Number(localStorage.getItem(shiftType)));
+        localStorage.getItem(shiftType) ? setHours(Number(localStorage.getItem(shiftType))) : setHours(initialValue);
     }, [])
 
     const handleClick = (e) => {
@@ -57,8 +57,8 @@ const Hours = memo(({header, description, shiftType, totalHours}) => {
         </div>
 
         <div className={HourStyles.hoursDiv}>
-            <button className={HourStyles.button38} onClick={handleClick} >-16</button>
-            <button className={HourStyles.button38} onClick={handleClick} >-4</button>
+            {shiftType !== 'bonusHours' && <button className={HourStyles.button38} onClick={handleClick} >-16</button>}            
+            <button className={HourStyles.button38} onClick={handleClick} >{shiftType !== 'bonusHours' ? '-4' : '-1'}</button>
             <input 
                 value={hours.toString()} 
                 onChange={handleHourChange}
@@ -67,8 +67,8 @@ const Hours = memo(({header, description, shiftType, totalHours}) => {
                 id={nanoid()}
                 className={HourStyles.hoursInput}
             />
-            <button className={HourStyles.button38} onClick={handleClick} >+4</button>
-            <button className={HourStyles.button38} onClick={handleClick} >+16</button>
+            <button className={HourStyles.button38} onClick={handleClick} >{shiftType !== 'bonusHours' ? '+4' : '+1'}</button>
+            {shiftType !== 'bonusHours' && <button className={HourStyles.button38} onClick={handleClick} >+16</button>}
         </div>
     </section>
     )
