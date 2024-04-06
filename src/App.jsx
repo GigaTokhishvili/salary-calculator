@@ -25,8 +25,6 @@ function App() {
   const [speed, setSpeed] = useState(JSON.parse(localStorage.getItem('speed')) || REACTION[0])
   const [roulette, setRoulette] = useState(JSON.parse(localStorage.getItem('roulette')) || REACTION[0])
 
-  console.log(totalHours[3].amount)
-
   const changeStage = (x) => {
     setStage(x)
     localStorage.setItem('stage', JSON.stringify(x))
